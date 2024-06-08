@@ -105,4 +105,74 @@ if (percentage >= 80) {
     document.write("Remarks: Sorry <br>");
 }
 //===========================Question no:07============================================
+ 
+var secretNumber = 7;
+var userSecret= +prompt("Enter a secret Number")
+if(userSecret===secretNumber){
+document.write("Bingo! Correct answer <br>");
+}
+else if(userSecret + 1 ===secretNumber){
+document.write("Close enough to the Correct answer <br>");
+}
+//===========================Question no:08============================================
+var userInput =+prompt("Enter any Number")
 
+if(userInput%3 == 0){
+  document.write("Number is divisible by 3 <br>")
+}
+else{
+  document.write("Not Divisible by 3 <br>")
+}
+//===========================Question no:09============================================
+ 
+var userIn = +prompt("Enter any number:")
+if(userIn%2 == 0){
+  document.write("Number is even <br>")
+}
+else {
+  document.write("Number is odd <br>")
+}
+
+//===========================Question no:10============================================
+ 
+var input= +prompt("Enter Temperature:")
+
+if(input>40){
+  document.write("It is too hot outside.<br>")
+}
+else if(input>30){
+  document.write("The Weather today is Normal.<br>")
+}
+else if(input>20){
+  document.write("Today’s Weather is cool.<br>")
+}
+else if(input>10){
+  document.write("OMG! Today’s weather is so Cool.<br>")
+}
+
+//===========================Question no:11============================================
+
+var firstNumber= +prompt("Enter First Number");
+var secondNumber= +prompt("Enter Second Number");
+var op= prompt("Enter any operator(-,+,*,/,%)");
+
+if(op == "+"){
+  result=firstNumber+secondNumber;
+  document.write(`Addition of ${firstNumber} and ${secondNumber} is ${result}`)
+}
+if(op == "-"){
+  result=firstNumber-secondNumber;
+  document.write(`Subtraction of ${firstNumber} and ${secondNumber} is ${result}`)
+}
+if(op == "*"){
+  result=firstNumber*secondNumber;
+  document.write(`Multiplication of ${firstNumber} and ${secondNumber} is ${result}`)
+}
+if(op == "/"){
+  result=firstNumber/secondNumber;
+  document.write(`Division of ${firstNumber} and ${secondNumber} is ${result}`)
+}
+if(op == "%"){
+  result=firstNumber%secondNumber;
+  document.write(`Modulus of ${firstNumber} and ${secondNumber} is ${result}`)
+}
