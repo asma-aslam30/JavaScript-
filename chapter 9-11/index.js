@@ -160,19 +160,22 @@ if(op == "+"){
   result=firstNumber+secondNumber;
   document.write(`Addition of ${firstNumber} and ${secondNumber} is ${result}`)
 }
-if(op == "-"){
+else if(op == "-"){
   result=firstNumber-secondNumber;
   document.write(`Subtraction of ${firstNumber} and ${secondNumber} is ${result}`)
 }
-if(op == "*"){
+else if(op == "*"){
   result=firstNumber*secondNumber;
   document.write(`Multiplication of ${firstNumber} and ${secondNumber} is ${result}`)
 }
-if(op == "/"){
+else if(op == "/"){
   result=firstNumber/secondNumber;
   document.write(`Division of ${firstNumber} and ${secondNumber} is ${result}`)
 }
-if(op == "%"){
+else if(op == "%"){
   result=firstNumber%secondNumber;
   document.write(`Modulus of ${firstNumber} and ${secondNumber} is ${result}`)
+}
+else{
+  document.write("Invalid Choice..!")
 }
