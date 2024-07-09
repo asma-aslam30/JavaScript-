@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marksheet</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-color: rgb(245, 229, 6);
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .marksheet {
+            margin-top: 50px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+        }
+        .marksheet-header {
+            text-align: center;
+            color: aqua;
+            background-color: black;
+            border: 14px solid black;
+            border-radius: 10px;
+        }
+        .subject, .total, .percentage, .grade {
+            margin-bottom: 15px;
+        }
+        .congratulation {
+            font-weight: bold;
+            color: rgb(241, 23, 121);
+        }
+    </style>
+</head>
+<body>
+    <div class="container marksheet">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header marksheet-header">
+                        <h2>Student Marksheet</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="marksheet-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var mathematics = +prompt("Enter Your Mathematics Marks...");
+        var computerScience = +prompt("Enter Your Computer Science Marks...");
+        var english = +prompt("Enter Your English Marks...");
+
+        var totalMarks = mathematics + english + computerScience;
+
+        var totalSubjects = 3;
+        var percentage = (totalMarks / (totalSubjects * 100)) * 100;
+
+        let grade = "Fail";
+        if (percentage >= 80) {
+            grade = "A+";
+        } else if (percentage >= 70) {
+            grade = "A";
+        } else if (percentage >= 60) {
+            grade = "B";
+        } else if (percentage >= 50) {
+            grade = "C";
+        }
+
+        document.getElementById('marksheet-content').innerHTML = `
+            <div class="subject">Mathematics: ${mathematics}</div>
+            <div class="subject">English: ${english}</div>
+            <div class="subject">Computer Science: ${computerScience}</div>
+            <hr>
+            <div class="total">Total Marks: ${totalMarks}</div>
+            <div class="percentage">Percentage: ${percentage.toFixed(2)}%</div>
+            <div class="grade">Your Grade: ${grade}</div>
+            <div class="congratulation">Congratulation! Your percentage is ${Math.round(percentage)} and your grade is ${grade} 🎉🎊</div>
+        `;
+    </script>
+</body>
+</html>
