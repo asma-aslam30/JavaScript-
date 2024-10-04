@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form to PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfjs-dist/3.7.0/pdf.min.js"></script>
+</head>
+<body>
+    <form id="myForm">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div>
+            <label for="dropdown1">Dropdown 1:</label>
+            <select id="dropdown1" name="dropdown1">
+                <option value="Option 1">Option 1</option>
+                <option value="Option 2">Option 2</option>
+                <option value="Option 3">Option 3</option>
+            </select>
+        </div>
+        <div>
+            <label for="dropdown2">Dropdown 2:</label>
+            <select id="dropdown2" name="dropdown2">
+                <option value="Option A">Option A</option>
+                <option value="Option B">Option B</option>
+                <option value="Option C">Option C</option>
+            </select>
+        </div>
+        <div>
+            <label for="textarea">Additional Information:</label>
+            <textarea id="textarea" name="textarea" rows="4" cols="50"></textarea>
+        </div>
+        <div>
+            <label for="file">Upload Image or PDF:</label>
+            <input type="file" id="file" name="file" accept="image/*,application/pdf">
+        </div>
+        <button type="button" onclick="generatePDF()">Download PDF</button>
+    </form>
+
+    <script>
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const form = document.getElementById('myForm');
+
+            // Add form data to the PDF
+            const name = form.name.value;
+            const email = form.email.value;
+            const dropdown1 = form.dropdown1.value;
+            const dropdown2 = form.dropdown2.value;
+            const textarea = form.textarea.value;
+
+            doc.text(`Name: ${name}`, 10, 10);
+            doc.text(`Email: ${email}`, 10, 20);
+            doc.text(`Dropdown 1: ${dropdown1}`, 10, 30);
+            doc.text(`Dropdown 2: ${dropdown2}`, 10, 40);
+            doc.text(`Additional Information: ${textarea}`, 10, 50);
+
+            // Handle file upload
+            const fileInput = document.getElementById('file').files[0];
+            if (fileInput) {
+                const fileType = fileInput.type;
+                const reader = new FileReader();
+
+                if (fileType.startsWith('image/')) {
+                    // Handle image file
+                    reader.onload = function(event) {
+                        const imgData = event.target.result;
+                        doc.addImage(imgData, 'JPEG', 10, 60, 180, 160); // Adjust size as needed
+                        doc.save('form.pdf');
+                    };
+                    reader.readAsDataURL(fileInput);
+                } else if (fileType === 'application/pdf') {
+                    // Handle PDF file
+                    reader.onload = async function(event) {
+                        try {
+                            const pdfData = new Uint8Array(event.target.result);
+                            const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+                            const numPages = pdf.numPages;
+
+                            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                                const page = await pdf.getPage(pageNum);
+                                const viewport = page.getViewport({ scale: 1 });
+                                const canvas = document.createElement('canvas');
+                                const context = canvas.getContext('2d');
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
+
+                                await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+                                const imgData = canvas.toDataURL('image/jpeg');
+                                if (pageNum > 1) {
+                                    doc.addPage();
+                                }
+                                doc.addImage(imgData, 'JPEG', 10, 10, viewport.width * 0.75, viewport.height * 0.75); // Adjust size as needed
+                            }
+                            doc.save('form.pdf');
+                        } catch (error) {
+                            console.error('Error processing PDF:', error);
+                            alert('An error occurred while processing the PDF.');
+                        }
+                    };
+                    reader.readAsArrayBuffer(fileInput);
+                } else {
+                    alert('Unsupported file type.');
+                }
+            } else {
+                doc.save('form.pdf');
+            }
+        }
+    </script>
+</body>
+</html>
